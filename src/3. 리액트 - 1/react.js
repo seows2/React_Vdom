@@ -1,5 +1,10 @@
-const render = (component, container) => {
-  console.log(component);
+const renderRealDOM = (vdom) => {
+  const $el = document.createElement(vdom.tagName);
+  return $el;
+};
+
+const render = (vdom, container) => {
+  container.appendChild(renderRealDOM(vdom));
 };
 
 const createElement = (tagName, props, ...children) => {
