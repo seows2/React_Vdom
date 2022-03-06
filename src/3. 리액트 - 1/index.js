@@ -1,10 +1,16 @@
 /** @jsx createElement */
-import { render, createElement } from "./react.js";
+import { render, createElement, Component } from "./react.js";
+
+class TitleClass extends Component {
+  render() {
+    return <h2>리얼돔으로 바꿔죠</h2>;
+  }
+}
 
 const Title = () => {
   return (
     <div>
-      <h2>리얼돔으로 바꿔죠</h2>
+      <TitleClass />
       <div>divdiv</div>
     </div>
   );

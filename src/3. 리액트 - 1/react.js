@@ -1,3 +1,9 @@
+class Component {
+  render() {
+    return "";
+  }
+}
+
 const convertToReadlDOM = (vdom) => {
   if (typeof vdom === "string") return document.createTextNode(vdom);
 
@@ -10,15 +16,30 @@ const convertToReadlDOM = (vdom) => {
   return $el;
 };
 
-const render = (vdom, container) => {
-  container.appendChild(convertToReadlDOM(vdom));
-};
+const render = (function () {
+  let prevVdom = null;
+
+  return function (nextVdom, container) {
+    if (prevVdom === null) {
+      prevVdom = nextVdom;
+    }
+
+    // 재조정 알고리즘
+
+    container.appendChild(convertToReadlDOM(nextVdom));
+  };
+})();
 
 const createElement = (tagName, props, ...children) => {
   if (typeof tagName === "function") {
-    return tagName(props, ...children);
+    if (tagName.prototype instanceof Component) {
+      const instance = new tagName({ props, ...children });
+      return instance.render();
+    } else {
+      return tagName(props, ...children);
+    }
   }
   return { tagName, props, children: children.flat() };
 };
 
-export { render, createElement };
+export { render, createElement, Component };
