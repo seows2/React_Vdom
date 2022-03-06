@@ -1,10 +1,17 @@
-const renderRealDOM = (vdom) => {
+const convertToReadlDOM = (vdom) => {
+  if (typeof vdom === "string") return document.createTextNode(vdom);
+
   const $el = document.createElement(vdom.tagName);
+
+  vdom.children.map(convertToReadlDOM).forEach((node) => {
+    $el.appendChild(node);
+  });
+
   return $el;
 };
 
 const render = (vdom, container) => {
-  container.appendChild(renderRealDOM(vdom));
+  container.appendChild(convertToReadlDOM(vdom));
 };
 
 const createElement = (tagName, props, ...children) => {
